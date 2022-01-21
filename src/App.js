@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+import CoursesAvailable from "./Components/CoursesAvailable";
+import Header from "./Components/Header";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboard from "./Components/Dashboard";
+import LoginPage from "./Components/LoginPage";
+import SignUpPage from "./Components/SignUp";
+import ErrorPage from "./Components/ErrorPage";
+import Requests from "./Components/Requests";
+
+const Home = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="courses-available">
+      <h2>Courses Available</h2>
+      <CoursesAvailable />
     </div>
   );
-}
+};
+
+const App = () => {
+  const [role, setRole] = useState("admin");
+  const [currentId, setCurrentId] = useState("");
+  const [loginState, setLoginState] = useState(false);
+
+  return (
+    <Router>
+      <Header role={role} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/requests" element={<Requests role={role} />} />
+        <Route path="/login" element={<LoginPage loginState={loginState} />} />
+        <Route
+          path="/signup"
+          element={<SignUpPage loginState={loginState} />}
+        />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App;
